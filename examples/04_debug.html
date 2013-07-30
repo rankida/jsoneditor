@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../jsoneditor.css">
+    <script type="text/javascript" src="../jsoneditor/js/jsoneditor.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/treeeditor.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/texteditor.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/node.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/appendnode.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/contextmenu.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/searchbox.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/highlighter.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/util.js"></script>
+    <script type="text/javascript" src="../jsoneditor/js/module.js"></script>
+    <style type="text/css">
+        body {
+            font: 11pt arial;
+        }
+        #jsoneditor {
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        Debug Page - using raw files
+    </p>
+    <div id="jsoneditor"></div>
+
+    <script type="text/javascript" >
+        // create the editor
+        var container = document.getElementById("jsoneditor");
+        var options = {
+            mode: "view",
+            contextOptions: {}
+        };
+        var json = {
+            "array": [1, 2, 3],
+            "boolean": true,
+            "null": null,
+            "number": 123,
+            "object": {"a": "b", "c": "d"},
+            "string": "Hello World",
+            "PlannedStartDate": "/Date(1372846826000)/",
+            'randomString': "bla bla bla"
+        };
+        var editor = new jsoneditor.JSONEditor(container, options, json);
+    </script>
+</body>
+</html>
