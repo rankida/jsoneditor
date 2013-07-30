@@ -1162,7 +1162,10 @@ Node.prototype.getDom = function() {
             tdDrag.appendChild(domDrag);
         }
         dom.tr.appendChild(tdDrag);
+    }
 
+    // DaR Edit - If the user has passed in custom context menu options, show them irrespective of mode.
+    if (this.editor.mode.edit || (this.editor.options.contextMenu && this.editor.options.contextMenu.length > 0)) {
         // create context menu
         var tdMenu = document.createElement('td');
         var menu = document.createElement('button');
@@ -2540,6 +2543,11 @@ Node.prototype.showContextMenu = function (anchor, onClose) {
     var titles = Node.TYPE_TITLES;
     var items = [];
 
+    // DaR -Edit Allow custom context menu to be injected.
+    if(this.editor.options.contextMenu && this.editor.options.contextMenu.length > 0) {
+        return this.showCustomContextMenu(anchor, onClose);
+    }
+
     items.push({
         'text': 'Type',
         'title': 'Change the type of this field',
@@ -2737,6 +2745,39 @@ Node.prototype.showContextMenu = function (anchor, onClose) {
     var menu = new ContextMenu(items, {close: onClose});
     menu.show(anchor);
 };
+
+// DaR Edit - Overriding the showContextMenu so that I can add my own context menu functions.
+Node.prototype.showCustomContextMenu = function (anchor, onClose) {
+
+    var node = this;
+    var items = [];
+
+    // Custom Context Menues
+    this.editor.options.contextMenu.forEach(function(item){
+        // Pass this/node into the click function
+        if (item.click) {
+            var oldClick = item.processed ? item.oldClick : item.click;
+            item.oldClick = oldClick;
+            item.processed = true;
+            item.click = function() { oldClick(node); };
+        }
+
+        // an optionaly condition function allows the user to filter the options based on the node clicked.
+        if (item.condition ? item.condition(node) : true) {
+            items.push(item);
+        }
+    });
+
+    if (items.length === 0) {
+        items.push({
+            text: 'Sorry no options',
+            className: 'remove'
+        });
+    }
+
+    var menu = new ContextMenu(items, {close: onClose});
+    menu.show(anchor);
+}
 
 /**
  * get the type of a value
