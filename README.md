@@ -1,6 +1,11 @@
 # JSON Editor Online
 http://jsoneditoronline.org/
 
+## Rankida Comments
+
+I have forked this repo because I think it is awsome, but for a project I am
+working on I would like to be able to show context menus even in a read-only
+view, and for those context menus to be non-standard.
 
 ### Description
 
