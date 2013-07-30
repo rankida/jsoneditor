@@ -6,6 +6,7 @@ var jsoneditor = {
         throw new Error('JSONFormatter is deprecated. ' +
             'Use JSONEditor with mode "text" or "code" instead');
     },
+    'Node': Node,
     'util': util
 };
 
@@ -40,7 +41,7 @@ if (typeof(module) != 'undefined' && typeof(exports) != 'undefined') {
  */
 if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
     define(function () {
-        loadCss();
+        // loadCss();
         return jsoneditor;
     });
 }
