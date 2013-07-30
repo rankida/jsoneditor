@@ -2487,15 +2487,22 @@ Node.prototype.getDom = function() {
         dom.tr.appendChild(tdDrag);
     }
 
-    // DaR Edit - If the user has passed in custom context menu options, show them irrespective of mode.
-    if (this.editor.mode.edit || (this.editor.options.contextMenu && this.editor.options.contextMenu.length > 0)) {
+    // DaR Edit - If the user has passed in custom context menu options, show them irrespective of mode, but only if they apply to this node
+    var hasCustomOptions = this.editor.options.contextMenu && this.editor.options.contextMenu.length > 0;
+    var visibleOptions = true;
+    this.editor.options.contextMenu.forEach(function(c){
+        visibleOptions = visibleOptions && (c.condition ? c.condition(dom.tr.node) : true);
+    });
+    if (this.editor.mode.edit || hasCustomOptions) {
         // create context menu
         var tdMenu = document.createElement('td');
-        var menu = document.createElement('button');
-        dom.menu = menu;
-        menu.className = 'contextmenu';
-        menu.title = 'Click to open the actions menu (Ctrl+M)';
-        tdMenu.appendChild(dom.menu);
+        if (this.editor.mode.edit || visibleOptions) {
+            var menu = document.createElement('button');
+            dom.menu = menu;
+            menu.className = 'contextmenu';
+            menu.title = 'Click to open the actions menu (Ctrl+M)';
+            tdMenu.appendChild(dom.menu);
+        }
         dom.tr.appendChild(tdMenu);
     }
 
@@ -6062,6 +6069,7 @@ var jsoneditor = {
         throw new Error('JSONFormatter is deprecated. ' +
             'Use JSONEditor with mode "text" or "code" instead');
     },
+    'Node': Node,
     'util': util
 };
 
@@ -6096,7 +6104,7 @@ if (typeof(module) != 'undefined' && typeof(exports) != 'undefined') {
  */
 if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
     define(function () {
-        loadCss();
+        // loadCss();
         return jsoneditor;
     });
 }
